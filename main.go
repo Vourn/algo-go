@@ -45,10 +45,14 @@ func main() {
 	Left: nodeB,
 	Right: nodeC,
     }
-    preResult := binarytree.PreorderTra(nodeA)
-    inResult := binarytree.InorderTra(nodeA)
-    backResult := binarytree.BackorderTra(nodeA)
-    fmt.Println(preResult)
-    fmt.Println(inResult)
-    fmt.Println(backResult)
+    //preResult := binarytree.PreorderTra(nodeA)
+    //inResult := binarytree.InorderTra(nodeA)
+    //backResult := binarytree.BackorderTra(nodeA)
+    //fmt.Println(preResult)
+    //fmt.Println(inResult)
+    //fmt.Println(backResult)
+    dfsResult := binarytree.PreorderDfsTra(nodeA)
+    fmt.Println(dfsResult)
+    bfsResult := binarytree.BfsLevelOrder(nodeA)
+    fmt.Println(bfsResult)
 }

@@ -89,6 +89,71 @@ func BackorderTra(root *TreeNode) []int {
     return result
 }
 
+
+func PreorderDfsTra(root *TreeNode) []int {
+    // 从上到下
+    //result := make([]int, 0)
+    //dfs(root, &result)
+    // 从下到上
+    result := divideAndConquer(root)
+    return result	
+}
+
+// DFS深度搜索-从上到下
+func dfs(root *TreeNode, result *[]int) {
+    if root == nil {
+	return
+    }
+    *result = append(*result, root.Val)
+    dfs(root.Left, result)
+    dfs(root.Right, result)    
+}
+
+// DFS深度搜索-从下到上（分治法）
+func divideAndConquer(root *TreeNode) []int {
+    result := make([]int, 0)
+    if root == nil {
+	return result
+    }
+    left := divideAndConquer(root.Left)
+    right := divideAndConquer(root.Right)
+    // conquer
+    result = append(result, root.Val)
+    result = append(result, left...)
+    result = append(result, right...)
+    return result
+}
+
+func BfsLevelOrder(root *TreeNode) []int {
+    //result := make([][]int, 0)
+    result := make([]int, 0)
+    if root == nil {
+	return result
+    }
+    queue := make([]*TreeNode, 0)
+    queue = append(queue, root)
+    for len(queue) > 0 {
+	//list := make([]int, 0)
+	// 获取queue长度，遍历当前层结点，添加下一层元素
+	levelLen := len(queue)
+	for i := 0; i < levelLen; i++ {
+	    node := queue[0]
+	    queue = queue[1:] // 结点出队列
+	    //list = append(list, node.Val)
+	    result = append(result, node.Val)
+	    // 结点下层元素入队
+	    if node.Left != nil {
+		queue = append(queue, node.Left)
+	    }
+	    if node.Right != nil {
+		queue = append(queue, node.Right)
+	    }
+	}
+	//result = append(result, list)
+    }
+    return result
+}
+
 type TreeNode struct {
     Val int
     Left *TreeNode
