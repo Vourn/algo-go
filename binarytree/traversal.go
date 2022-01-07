@@ -124,6 +124,7 @@ func divideAndConquer(root *TreeNode) []int {
     return result
 }
 
+// BFS层级搜索
 func BfsLevelOrder(root *TreeNode) []int {
     //result := make([][]int, 0)
     result := make([]int, 0)
