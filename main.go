@@ -3,7 +3,7 @@ package main
 import (
     "fmt"
     "github.com/Vourn/algo-go/binarytree"
-    "github.com/Vourn/algo-go/sortalgo"
+    "github.com/Vourn/algo-go/sort"
 )
 func main() {
     nodeH := &binarytree.TreeNode {
@@ -57,6 +57,8 @@ func main() {
     //fmt.Println(dfsResult)
     bfsResult := binarytree.BfsLevelOrder(nodeA)
     fmt.Println(bfsResult)
-    mergeSortResult := sortalgo.MergeSort(nums)
-    fmt.Println(mergeSortResult)
+    //mergeSortResult := sort.MergeSort(nums)
+    //fmt.Println(mergeSortResult)
+    quickSortResult := sort.QuickSort(nums)
+    fmt.Println(quickSortResult)
 }
