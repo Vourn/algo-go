@@ -78,3 +78,25 @@ func max(a, b int) int {
     }
     return b
 }
+
+// 二叉树的最近公共祖先 (节点在同一子树，返回最先访问到的节点，分布在左右子树，返回父节点)
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+    if root == nil {
+	return root
+    }
+    if root.Val == p || root.Val == q {
+	return root
+    }
+    // divide
+    left := lowestCommonAncestor(root.Left, p, q)
+    right := lowestCommonAncestor(root.Right, p, q)
+
+    // conquer
+    if left != nil && right != nil {
+	return root
+    }
+    if left == nil {
+ 	return right
+    }
+    return left
+}
