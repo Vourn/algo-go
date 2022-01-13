@@ -100,3 +100,66 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
     }
     return left
 }
+
+// 给定二叉树，返回其节点值自底向上的层次遍历。（层次遍历+结果翻转）
+func levelOrderBottom(root *TreeNode) [][]int {
+    result := make([][]int, 0)
+    if root == nil {
+	return result
+    }
+    queue := []*TreeNode{root}
+    for len(queue) > 0 {
+	list := make([]int, 0)
+        l := len(queue)
+        for i := 0; i < l; i++ {
+	    node := queue[0]
+	    queue = queue[1:]
+	    list = append(list, node.Val)
+	    if node.Left != nil {
+	    	queue = append(queue, node.Left)
+	    }
+	    if node.Right != nil {
+		queue = append(queue, node.Right)
+	    }
+	}
+    	result = append(result, list)
+    }
+    for i, j := 0, len(result)-1; i < j; i, j = i+1, j-1 {
+	result[i], result[j] = result[j], result[i]
+    }
+    return result
+}
+
+// 给定二叉树，返回其节点值的锯齿形层次遍历，Z字遍历（层次遍历+奇数层节点值翻转）
+func zigzagLevelOrder(root *TreeNode) [][]int {
+    result := make([][]int, 0)
+    if root == nil {
+	return result
+    }
+    queue := []*TreeNode{root}
+    toggle := false
+    for len(queue) > 0 {
+	list := make([]int, 0)
+        l := len(queue)
+	for i := 0; i < l; i++ {
+	    // 节点出队
+	    node := queue[0]
+	    queue = queue[1:]
+	    list = append(list, node.Val)
+	    if node.Left != nil {                
+    		queue = append(queue, node.Left) 
+	    }                                    
+	    if node.Right != nil {               
+    		queue = append(queue, node.Right)
+	    }                                    
+	}
+        if toggle {
+	     for j := 0; j < len(list)/2; j++ {
+		list[i], list[len(list)-1-i] = list[len(list)-1-i], list[i]	
+	     }
+	}
+        result = append(result, list)
+        toggle = !toggle
+    }
+    return result
+}
