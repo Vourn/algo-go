@@ -1,5 +1,8 @@
 // leet code exercise
 package binarytree
+import (
+    "math"
+)
 
 // 一棵二叉树的最大深度
 func MaxDepth(root *TreeNode) int {
@@ -23,6 +26,7 @@ func isBalanced(root *TreeNode) bool {
     }
     return true
 }
+
 func maxDepth(root *TreeNode) int {
     if root == nil {
 	return 0
@@ -44,10 +48,12 @@ type ResultType struct {
     SinglePath int
     MaxPath int
 }
+
 func maxPathSum(root *TreeNode) int {
     result := helper(root)
     return result.MaxPath
 }
+
 func helper(root *TreeNode) ResultType {
     if root == nil {
 	return ResultType {
@@ -72,6 +78,7 @@ func helper(root *TreeNode) ResultType {
     result.MaxPath = max(maxPath, left.SinglePath + right.SinglePath + root.Val)
     return result
 }
+
 func max(a, b int) int {
     if a > b {
 	return a
@@ -162,4 +169,33 @@ func zigzagLevelOrder(root *TreeNode) [][]int {
         toggle = !toggle
     }
     return result
+}
+
+// 判断是否为有效二叉搜索树（左节点<根节点<右节点）
+func isValidBST(root *TreeNode) bool {
+    return helperBST(root, math.MinInt64, math.MaxInt64)
+}
+
+func helperBST(root *TreeNode, lower, upper int) bool {
+    if root == nil {
+	return true
+    }
+    if root.Val <= lower || root.Val >= upper {
+	return false
+    }
+    return helperBST(root.Left, lower, root.Val) && helperBST(root.Right, roo.Val, upper)
+}
+
+// 二叉搜索树插入操作
+func insertIntoBST(root *TreeNode, val int) *TreeNode {
+    if root == nil {
+    	root = &TreeNode{Val: val}
+	return root
+    }
+    if val < root.Val {
+	root.Left = insertIntoBST(root.Left, val)
+    } else {
+	root.Right = insertIntoBST(root.Right, val)
+    }
+    return root
 }
