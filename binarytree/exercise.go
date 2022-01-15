@@ -199,3 +199,30 @@ func insertIntoBST(root *TreeNode, val int) *TreeNode {
     }
     return root
 }
+
+// 二叉树删除操作
+func deleteNode(root *TreeNode, key int) *TreeNode {
+    if root == nil {
+	return root
+    }
+    if root.Val == key {
+  	if root.Left == nil {
+ 	    return root.Right
+	} else if root.Right == nil {
+	    return root.Left
+	} else if {
+	    cur := root.Right
+	    // 找到左分支最后一个节点
+	    for cur.Left != nil {
+		cur = cur.Left
+	    }
+	    return root.Right
+	}
+    }
+    if root.Val > key {
+	root.Left = deleteNode(root.Left, key)
+    } else {
+	root.Right = deleteNode(root.Right, key)
+    }
+    return root
+}
