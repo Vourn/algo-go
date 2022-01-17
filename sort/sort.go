@@ -62,3 +62,15 @@ func partition(nums []int, start, end int) int {
     nums[i], nums[end] = nums[end], nums[i]
     return i 
 }
+
+// 冒泡排序
+func BubbleSort(nums []int) []int {
+    for i := 0; i < len(nums) - 1; i++ {
+	for j := i+1; j < len(nums); j++ {
+	    if nums[i] > nums[j] {
+		nums[i], nums[j] = nums[j], nums[i]
+	    }
+	} 
+    }
+    return nums
+}
