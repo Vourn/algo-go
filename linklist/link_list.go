@@ -70,3 +70,48 @@ func reverseBetween(head *ListNode, left, right int) *ListNode {
     }
     return dummy.Next
 }
+
+// 合并两个有序链表
+func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
+    dummy := &ListNode{Val: 0}
+    head := dummy
+    for list1 != nil && list2 != nil {
+	if list1.Val < head.Val {
+	    head.Next = list1
+	    list1 = list1.Next
+	} else {
+	    head.Next = list2
+	    list2 = list2.Next
+        }
+	head = head.Next
+    }
+    // 合并剩余部分
+    if list1 != nil {
+	head.Next = list1
+    } else {
+ 	head.Next = list2
+    }
+    return dummy.Next
+}
+
+// 分隔链表，使小于x的节点都在大于等于x节点之前（新链表存储大于等于的节点，最后连接两个链表）
+func partition(head *ListNode, x int) *ListNode {
+    curDummy := &ListNode{}
+    cur := curDummy
+    tailDummy := &ListNode{}
+    tail := tailDummy
+    for head != nil {
+	if head.Val < x {
+	    cur.Next = head
+	    cur = cur.Next
+	} else {
+	    tail.Next = head
+	    tail = tail.Next
+	}
+	head = head.Next
+    }
+    // 合并两个链表
+    tail.Next = nil
+    cur.Next = tailDummy.Next
+    return curDummy.Next
+}
