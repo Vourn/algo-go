@@ -115,3 +115,95 @@ func partition(head *ListNode, x int) *ListNode {
     cur.Next = tailDummy.Next
     return curDummy.Next
 }
+
+// 重排链表，l1->l2->...->ln-1->ln   =>  l1->ln->l2->ln-1->...
+func reorder(order *ListNode) {
+    if head == nil {
+	return
+    }
+    // 找中点断开链表
+    slow := head
+    fast := head.Next
+    for fast != nil && fast.Next != nil {
+	fast = fast.Next.Next
+  	slow = slow.Next
+    }
+    // 翻转后半部分
+    tail := reverse(slow.Next)
+    slow.Next = nil
+    // 合并链表
+    head = mergeReOrderList(head, tail)
+}
+
+func reverse(head *ListNode) *ListNode {
+    var prev *ListNode
+    for head != nil {
+	temp := head.Next
+	head.Next = prev
+	prev = head
+	head = temp
+    }
+    return prev
+}
+
+func mergeReOrderList(list1, list2 *ListNode) *ListNode {
+    dummy := &ListNode{}
+    head := dummy
+    toggle := true
+    for head != nil {
+	if toggle {
+	    head.Next = list1
+	    list1 = list1.Next
+	} else {
+	    head.Next = list2
+	    list2 = list2.Next
+	}
+ 	toggle = !toggle
+	head = head.Next
+    }
+    if list1 != nil {
+ 	head.Next = list1
+    } else {
+	head.Next = list2
+    }
+    return dummy.Next
+}
+
+// 归并排序 排序链表
+func sortList(head *ListNode) *ListNode {
+    if head == nil || head.Next == nil {
+	retyrn head
+    }
+    // 找中点断链表
+    slow := head
+    tail := head.Next
+    for fast != nil && fast.Next != nil {
+	fast = fast.Next.Next
+ 	slow = slow.Next
+    }
+    tail := slow.Next
+    slow.Next = nil
+    // 递归合并
+    return mergeSortList(sortList(head), sortList(tail))
+}
+
+func mergeSortList(list1, list2 *ListNode) *ListNode {
+    dummy := &listNode{}
+    head := dummy
+    for list1 != nil && list2 != nil {
+	if list1.Val < list2.Val {
+	    head.Next = list1
+	    list1 = list1.Next
+	} else {
+	    head.Next = list2
+	    list2 = list2.Next
+	}
+	head = head.Next
+    }
+    if list1 != nil {
+	head.Next = list1
+    } else {
+	head.Next = list2
+    }
+    return dummy.Next
+}
