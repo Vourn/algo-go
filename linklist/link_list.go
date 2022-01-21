@@ -207,3 +207,44 @@ func mergeSortList(list1, list2 *ListNode) *ListNode {
     }
     return dummy.Next
 }
+
+// 环形链表-快慢指针 判断链表是否有环
+func hasCycle(head *ListNode) bool {
+    if head == nil {
+	return false
+    }
+    fast := head.Next
+    slow := head
+    for fast != nil && fast.Next != nil {
+	if fast == slow {
+	    return true
+	}
+	fast = fast.Next.Next
+	slow = slow.Next
+    }
+    return false
+}
+
+// 环形链表-快慢指针 返回链表开始入环的第一个节点
+func detectCycle(head *ListNode) *ListNode {
+    if head == nil {
+	return head
+    }
+    fast := head.Next
+    slow := head
+    for fast != nil && fast.Next != nil {
+	// 通过指针比较，而不是Val，Val可能存在重复
+	if fast == slow {
+	    fast = head
+	    slow = slow.Next
+	    for fast != slow {
+		fast = fast.Next
+		slow = slow.Next
+	    }    
+	    return slow
+	}
+	fast = fast.Next.Next
+	slow = slow.Next
+    }
+    return nil
+}
