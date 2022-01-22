@@ -248,3 +248,64 @@ func detectCycle(head *ListNode) *ListNode {
     }
     return nil
 }
+
+// 判断是否为回文链表
+func isPalindrome(head *ListNode) bool {
+    if head == nil {
+	return true
+    }
+    // 快慢指针找中点
+    slow := head
+    fast := head.Next
+    for fast != nil && fast.Next != nil {
+	fast = fast.Next.Next
+	slow = slow.Next 
+    }
+    // 翻转后半部分
+    tail := reverse(slow.Next)
+    slow.Next = nil 
+    // 前后部分比较判断
+    for head != nil && tail != nil {
+	if head.Val != tail.Val {
+	    return false
+	}
+  	head = head.Next
+	tail = tail.Next
+    }
+    return true
+}
+
+func reverse(head *ListNode) *ListNode {
+    var prev *ListNode
+    for head != nil {
+	temp := head.Next
+	head.Next = prev
+	prev = head
+	head = temp
+    }
+    return prev
+}
+
+// 深拷贝带随机指针的链表
+func copyRandomList(head *Node) *Node {
+    if head == nil {
+   	return head
+    }
+    for node := head; node != nil; node = node.Next.Next {
+	node.Next = &Node{Val: node.Val, Next: node.Next}
+    }
+    for node := head; node != nil; node = node.Next.Next {
+	if node.Random != nil {
+	    node.Next.Random = node.Random.Next
+	}
+    }
+    headNew := head.Next
+    for node := head; node != nil; node = node.Next {
+	nodeNew := node.Next
+	node.Next = node.Next.Next
+	if nodeNew.Next != nil {
+	    nodeNew.Next = nodeNew.Next.Next
+	}
+    }
+    return headNew
+}
