@@ -77,3 +77,46 @@ func evalRPN(tokens []string) int {
     }
     return stack[0]
 }
+
+// 字符串解码（栈操作）
+func decodeString(s string) string {
+    if len(s) == 0 {
+        return ""
+    }
+    stack := make([]byte, 0)
+    numStack := make([]int, 0)
+    num := 0
+    for i := 0; i < len(s); i++ {
+        if s[i] == ']' {
+            // 临时栈，若直接stack切片赋值，后续stack底层数组修改会影响切片值
+            temp := make([]byte, 0)
+            for j := len(stack) - 1; j >= 0; j-- {
+                if stack[j] == '[' {
+                    // 取栈顶数字
+                    repeatK := numStack[len(numStack) - 1]
+                    stack = stack[:j]
+                    numStack = numStack[:len(numStack) - 1]
+                    // 字符串重复入栈
+                    for k := 0; k < repeatK; k++ {
+                        for z := len(temp)-1; z >= 0; z-- {
+                            stack = append(stack, temp[z])
+                        } 
+                    }
+                    break;
+                } else {
+                    temp = append(temp, stack[j])
+                }
+            }
+        } else if s[i] >= '0' && s[i] <= '9' {
+            n, _ := strconv.Atoi(string(s[i]))
+            num = num * 10 + n
+        } else {
+            if s[i] == '[' {
+                numStack = append(numStack, num)
+                num = 0
+            }
+            stack = append(stack, s[i])
+        }
+    }
+    return string(stack)
+}
