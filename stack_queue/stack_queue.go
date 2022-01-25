@@ -120,3 +120,52 @@ func decodeString(s string) string {
     }
     return string(stack)
 }
+
+// 克隆图
+func cloneGraph(node *Node) *Node {
+    visited := make(map[*Node]*Node)
+    return clone(node, visited)
+}
+
+func clone(node *Node, visited map[*Node]*Node) *Node {
+    if node == nil {
+        return nil
+    }
+    // 已被访问
+    if v, ok := visited[node]; ok {
+        return v
+    }
+    newNode := &Node{
+        Val: node.Val,
+        Neighbors: make([]*Node, len(node.Neighbors)),
+    }
+    visited[node] = newNode
+    for i := 0; i < len(node.Neighbors); i++ {
+        newNode.Neighbors[i] = clone(node.Neighbors[i], visited)
+    }
+    return newNode
+}
+
+// 岛屿数量 （深度搜索遍历可能性）
+func numIslands(grid [][]byte) int {
+    var count int
+    for i := 0; i< len(grid); i++ {
+        for j := 0; j < len(grid[i]); j++ {
+            if grid[i][j] == '1' && dfs(grid, i, j) >= 1 {
+                count++
+            }
+        }
+    }
+    return count
+}
+
+func dfs(grid [][]byte, i, j int) int {
+    if i < 0 || i >= len(grid) || j < 0 || j >= len(grid[0]) {
+        return 0
+    }
+    if grid[i][j] == '1'{
+        grid[i][j] = '0'
+        return dfs(grid, i-1, j) + dfs(grid, i, j-1) + dfs(grid, i+1, j) + dfs(grid, i, j+1) + 1
+    }
+    return 0
+}
