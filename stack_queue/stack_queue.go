@@ -169,3 +169,94 @@ func dfs(grid [][]byte, i, j int) int {
     }
     return 0
 }
+
+// 柱状图中最大的矩形（单调栈）
+func largestRectangleArea(heights []int) int {
+    if len(heights) == 0 {
+        return 0
+    }
+
+    stack := make([]int, 0)
+    max := 0
+    for i := 0; i <= len(heights); i++ {
+        var cur int
+        if i == len(heights) {
+            cur = 0
+        } else {
+            cur = heights[i]
+        }
+        for len(stack) != 0 && cur <= heights[stack[len(stack)-1]] {
+            pop := stack[len(stack)-1]
+            stack = stack[:len(stack)-1]
+            h := heights[pop]
+            // 宽度
+            w := i
+            if len(stack) != 0 {
+                peek := stack[len(stack)-1]
+                w = i - peek - 1
+            }
+            max = Max(max, h*w)
+        }
+        stack = append(stack, i)
+    }
+    return max
+}
+
+func Max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+
+// 栈实现队列
+type MyQueue struct {
+    stack, back []int
+}
+
+func Constructor() MyQueue {
+    return MyQueue{
+        stack: make([]int, 0),
+        back: make([]int, 0),
+    }
+}
+
+func (this *MyQueue) Push(x int)  {
+    for len(this.back) != 0 {
+        val := this.back[len(this.back)-1]
+        this.back = this.back[:len(this.back)-1]
+        this.stack = append(this.stack, val)
+    }
+    this.stack = append(this.stack, x)
+}
+
+func (this *MyQueue) Pop() int {
+    for len(this.stack) != 0 {
+        val := this.stack[len(this.stack)-1]
+        this.stack = this.stack[:len(this.stack)-1]
+        this.back = append(this.back, val)
+    }
+    if len(this.back) == 0{
+        return 0
+    }
+    val := this.back[len(this.back)-1]
+    this.back = this.back[:len(this.back)-1]
+    return val
+}
+
+func (this *MyQueue) Peek() int {
+    for len(this.stack) != 0 {
+        val := this.stack[len(this.stack)-1]
+        this.stack = this.stack[:len(this.stack)-1]
+        this.back = append(this.back, val)
+    }
+    if len(this.back) == 0{
+        return 0
+    }
+    val := this.back[len(this.back)-1]
+    return val
+}
+
+func (this *MyQueue) Empty() bool {
+    return len(this.stack) == 0 && len(this.back) == 0
+}
