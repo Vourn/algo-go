@@ -1,2 +1,2 @@
 # algo-go
-gogog
+gogogo
